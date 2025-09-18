@@ -1,4 +1,3 @@
-using System;
 using CashMachine.Models;
 
 namespace CashMachine.Utils
@@ -15,35 +14,40 @@ namespace CashMachine.Utils
             Console.Write("Please select an option: ");
         }
 
-        public static void WithdrawCash()
+        public static void WithdrawCash(Customer customer)
         {
             if (decimal.TryParse(Console.ReadLine(), out decimal withdrawAmount) && withdrawAmount > 0)
             {
-                if (withdrawAmount > (decimal)Customer.Balance)
+                if (withdrawAmount > customer.Account.Balance)
                 {
                     Console.WriteLine("Insufficient funds.");
                     return;
                 }
-                Console.WriteLine($"You have withdrawn ${withdrawAmount:F2}. Please take your cash.");
-                Customer.Balance -= (double)withdrawAmount;
+
+                if (customer.Account.Withdraw(withdrawAmount))
+                {
+                    Console.WriteLine($"You have withdrawn {withdrawAmount:F2} kr.");
+                }
             }
             else
             {
                 Console.WriteLine("Invalid amount entered.");
             }
         }
-        public static void DepositCash()
+
+        public static void DepositCash(Customer customer)
         {
             if (decimal.TryParse(Console.ReadLine(), out decimal depositAmount) && depositAmount > 0)
             {
-                Console.WriteLine($"You have deposited ${depositAmount:F2}. Thank you!");
-                Customer.Balance += (double)depositAmount;
+                customer.Account.Deposit(depositAmount);
+                Console.WriteLine($"You have deposited {depositAmount:F2} kr.");
             }
             else
             {
                 Console.WriteLine("Invalid amount entered.");
             }
         }
+
         public static void ShowInvalidOptionMessage()
         {
             Console.WriteLine("Invalid option selected. Please try again.");
@@ -53,6 +57,5 @@ namespace CashMachine.Utils
         {
             Console.WriteLine("Thank you for using the Cash Machine. Goodbye!");
         }
-
     }
 }
