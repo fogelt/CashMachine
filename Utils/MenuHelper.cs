@@ -1,4 +1,5 @@
 using System;
+using CashMachine.Models;
 
 namespace CashMachine.Utils
 {
@@ -18,7 +19,13 @@ namespace CashMachine.Utils
         {
             if (decimal.TryParse(Console.ReadLine(), out decimal withdrawAmount) && withdrawAmount > 0)
             {
+                if (withdrawAmount > (decimal)Customer.Balance)
+                {
+                    Console.WriteLine("Insufficient funds.");
+                    return;
+                }
                 Console.WriteLine($"You have withdrawn ${withdrawAmount:F2}. Please take your cash.");
+                Customer.Balance -= (double)withdrawAmount;
             }
             else
             {
@@ -30,6 +37,7 @@ namespace CashMachine.Utils
             if (decimal.TryParse(Console.ReadLine(), out decimal depositAmount) && depositAmount > 0)
             {
                 Console.WriteLine($"You have deposited ${depositAmount:F2}. Thank you!");
+                Customer.Balance += (double)depositAmount;
             }
             else
             {

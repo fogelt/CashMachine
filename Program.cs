@@ -12,7 +12,6 @@ namespace CashMachine
             int attempts = 0;
             bool isAuthenticated = false;
 
-            // Authentication loop
             while (attempts < MAX_ATTEMPTS && !isAuthenticated)
             {
                 Console.Write("Enter your PIN: ");
@@ -34,8 +33,6 @@ namespace CashMachine
                 Console.WriteLine("Maximum attempts exceeded. Exiting...");
                 return;
             }
-
-            decimal balance = 1000.00m;
             bool exit = false;
 
             while (!exit)
@@ -46,7 +43,7 @@ namespace CashMachine
                 switch (choice)
                 {
                     case "1":
-                        Console.WriteLine($"Your current balance is: ${balance:F2}");
+                        Console.WriteLine($"Your current balance is: ${Customer.Balance:F2}");
                         break;
                     case "2":
                         Console.Write("Enter amount to withdraw: $");
